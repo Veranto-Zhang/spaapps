@@ -220,7 +220,7 @@ class AssignmentController extends Controller
             'trx_no' => $request->trx_no,
             'date' => $date,
             'start_time' => $startTime,
-            'remark' => $request->startTime,
+            'remark' => $request->remark,
         ]);
 
         // Remove old guests

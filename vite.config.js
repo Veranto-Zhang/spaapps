@@ -8,4 +8,8 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        outDir: 'build',  // This outputs to public_html/build directly
+        emptyOutDir: true
+    }
 });
