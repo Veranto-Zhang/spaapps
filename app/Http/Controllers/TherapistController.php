@@ -170,7 +170,7 @@ class TherapistController extends Controller
             $therapist->update($validated);
         });
 
-        return redirect()->route('therapists.index');
+        return redirect()->route('therapists.therapistslist');
 
     }
 
@@ -197,4 +197,8 @@ class TherapistController extends Controller
         'is_available' => $therapist->is_available
     ]);
 }
+
+
+
+
 }
