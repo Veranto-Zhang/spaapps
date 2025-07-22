@@ -18,7 +18,6 @@ class TherapistController extends Controller
     public function index(Request $request)
     {
         $date = $request->input('date', today()->toDateString()); 
-
         // Only available therapists
         $therapists = Therapist::where('is_available', true)
             ->orderBy('name')
