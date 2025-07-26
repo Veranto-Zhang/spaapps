@@ -72,7 +72,7 @@
                                 <div class="col-span-2">
                                     <label class="block mb-2 text-md font-medium text-gray-900">Remark</label>
 
-                                    <textarea name="remark" required class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5">{{ old('remark') }}</textarea>
+                                    <textarea name="remark" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5">{{ old('remark') }}</textarea>
 
                                     <x-input-error :messages="$errors->get('remark')" class="mt-2" />
                                 </div>

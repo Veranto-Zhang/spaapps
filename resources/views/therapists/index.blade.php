@@ -54,7 +54,7 @@
                     <table class="w-full table-fixed text-sm text-center text-gray-600 border border-gray-200 min-w-full whitespace-nowrap">
                         <thead class="text-white bg-[#7d5f12] sticky top-0 z-20">
                             <tr>
-                                <th class="w-2 px-4 py-2 border border-white bg-[#7d5f12] sticky left-0 z-30">Time</th>
+                                <th class="w-20 px-4 py-2 border border-white bg-[#7d5f12] sticky left-0 z-30">Time</th>
                                 @foreach ($therapists as $therapist)
                                     <th class="w-32 px-4 py-2 border border-gray-200">
                                         {{ $therapist->name }}

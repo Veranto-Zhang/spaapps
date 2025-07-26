@@ -183,7 +183,7 @@ class TherapistController extends Controller
             $therapist->delete();
         });
 
-        return redirect()->route('therapists.index');
+        return redirect()->route('therapists.therapistslist');
     }
 
     public function toggle(Therapist $therapist)

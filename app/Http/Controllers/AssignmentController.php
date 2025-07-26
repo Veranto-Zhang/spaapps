@@ -170,9 +170,10 @@ class AssignmentController extends Controller
         $assignment->load('guests');
         $therapists = Therapist::orderBy('name')->get();
         $treatments = Treatment::orderBy('name')->get();
-        $room = Room::findOrFail($assignment->room_id);
-
-        return view('assignments.edit', compact('assignment', 'room', 'therapists', 'treatments'));
+        $roomId = Room::findOrFail($assignment->room_id);
+        $rooms = Room::orderBy('name')->get();
+        
+        return view('assignments.edit', compact('roomId','assignment', 'rooms', 'therapists', 'treatments'));
     }
 
     public function update(UpdateStoreAssignRequest $request, Assignment $assignment)
