@@ -50,7 +50,13 @@
                             <tr class="border-t">
                                 <td class="py-2 px-4 border">{{ $file['name'] }}</td>
                                 <td class="py-2 px-4 border">{{ number_format($file['size'] / 1024 / 1024, 2) }} MB</td>
-                                <td class="py-2 px-4 border">{{ \Carbon\Carbon::createFromTimestamp($file['date'])->format('Y-m-d H:i:s') }}</td>
+                                <td class="py-2 px-4 border">
+                                    @if (!empty($file['date']) && is_numeric($file['date']) && $file['date'] > 100000)
+                                        {{ \Carbon\Carbon::createFromTimestamp($file['date'])->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s') }}
+                                    @else
+                                        Unknown
+                                    @endif
+                                </td>
                                 <td class="py-2 px-4 border">
                                     <a href="{{ route('backup.download', ['file' => $file['name']]) }}" class="text-blue-500 hover:underline">
                                         Download

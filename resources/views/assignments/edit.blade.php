@@ -9,7 +9,7 @@
             @endif
 
             <div class="py-4">
-                <div class="max-w-3xl mx-auto sm:px-8 lg:px-10">
+                <div class="max-w-5xl mx-auto sm:px-8 lg:px-10">
                     <div class="relative bg-white rounded-lg shadow-sm">
                         <div class="flex items-center justify-between p-8 md:p-5 border-b rounded-t border-gray-200">
                             <h3 class="text-xl font-semibold text-gray-900">
@@ -118,13 +118,13 @@
         let guestIndex = 0;
         const wrapper = document.getElementById('guests-wrapper');
         const addGuestBtn = document.getElementById('add-guest');
-
+        const products = @json($products);
         const treatments = @json($treatments);
         const therapists = @json($therapists);
 
         function addGuestForm(data = {}, index = guestIndex) {
             const div = document.createElement('div');
-            div.classList.add('guest-form', 'border', 'p-4', 'rounded-lg', 'mb-4');
+            div.classList.add('guest-form', 'border', 'p-4', 'bg-gray-50','rounded-lg', 'mb-4');
 
             let treatmentOptions = `<option value="">Select Treatment</option>`;
             treatments.forEach(t => {
@@ -132,11 +132,37 @@
                 treatmentOptions += `<option value="${t.id}" ${selected}>${t.name}</option>`;
             });
 
-            // let therapistOptions = `<option value="">Select Therapist</option>`;
-            // therapists.forEach(t => {
-            //     const selected = data.therapist_id == t.id ? 'selected' : '';
-            //     therapistOptions += `<option value="${t.id}" ${selected}>${t.name}</option>`;
-            // });
+            let productOptions1 = `<option value="">Select Product</option>`;
+            products.forEach(p => {
+                if (p.product_category_id == 1) {
+                    const selected = (data.products && data.products[1] == p.id) ? 'selected' : '';
+                    productOptions1 += `<option value="${p.id}" ${selected}>${p.name}</option>`;
+                }
+            });
+
+            let productOptions2 = `<option value="">Select Product</option>`;
+            products.forEach(p => {
+                if (p.product_category_id == 2) {
+                    const selected = (data.products && data.products[2] == p.id) ? 'selected' : '';
+                    productOptions2 += `<option value="${p.id}" ${selected}>${p.name}</option>`;
+                }
+            });
+
+            let productOptions3 = `<option value="">Select Product</option>`;
+            products.forEach(p => {
+                if (p.product_category_id == 3) {
+                    const selected = (data.products && data.products[3] == p.id) ? 'selected' : '';
+                    productOptions3 += `<option value="${p.id}" ${selected}>${p.name}</option>`;
+                }
+            });
+
+            let productOptions4 = `<option value="">Select Product</option>`;
+            products.forEach(p => {
+                if (p.product_category_id == 4) {
+                    const selected = (data.products && data.products[4] == p.id) ? 'selected' : '';
+                    productOptions4 += `<option value="${p.id}" ${selected}>${p.name}</option>`;
+                }
+            });
 
             let therapistOptions = `<option value="">Select Therapist</option>`;
 
@@ -149,7 +175,7 @@
 
             div.innerHTML = `
                 <div class="flex flex-row justify-between">
-                    <h4 class="text-md font-medium mb-4">Guest ${index + 1}</h4>
+                    <h4 class="text-xl font-medium mb-2">Guest ${index + 1}</h4>
                     ${index > 0 ? `<button type="button" class="px-4 py-1 text-md bg-red-500 text-white rounded remove-guest">Remove</button>` : ''}
                 </div>
                 <div class="mt-4">
@@ -157,6 +183,7 @@
                     <input type="text" name="guests[${index}][name]" value="${data.name ?? ''}" required class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5">
                     ${renderError(`guests.${index}.name`)}
                 </div>
+                <hr class="mt-6 mb-2">
                 <div class="mt-4">
                     <label class="block text-md mb-2">Treatment</label>
                     <select name="guests[${index}][treatment_id]" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5" required>
@@ -164,6 +191,39 @@
                     </select>
                     ${renderError(`guests.${index}.treatment_id`)}
                 </div>
+                <div class="mt-4">
+                    <div class="flex gap-8">
+
+                        <div class="w-1/4">
+                            <label class="block text-md mb-2">Massage Oil</label>
+                            <select name="guests[${index}][products][1]" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5" required>
+                                ${productOptions1}
+                            </select>
+                        </div>
+                        <div class="w-1/4">
+                            <label class="block text-md mb-2">Body Mask</label>
+                            <select name="guests[${index}][products][2]" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5">
+                                ${productOptions2}
+                            </select>
+                        </div>
+                        <div class="w-1/4">
+                            <label class="block text-md mb-2">Body Scrub</label>
+                            <select name="guests[${index}][products][3]" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5">
+                                ${productOptions3}
+                            </select>
+                        </div>
+                        <div class="w-1/4">
+                            <label class="block text-md mb-2">Body Butter</label>
+                            <select name="guests[${index}][products][4]" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5">
+                                ${productOptions4}
+                            </select>
+                        </div>
+                        
+                    </div>
+                </div>
+                <hr class="mt-6 mb-2">
+
+
                 <div class="mt-4">
                     <label class="block text-md mb-2">Therapist</label>
                     <select name="guests[${index}][therapist_id]" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5" required>
@@ -205,7 +265,9 @@
             guestForms.forEach((form, index) => {
                 form.querySelector('h4').textContent = `Guest ${index + 1}`;
                 form.querySelectorAll('input, select').forEach((input) => {
-                    const field = input.name.match(/\[\d+\]\[([a-z_]+)\]/)?.[1];
+                    form.querySelectorAll('input, select').forEach((input) => {
+                        input.name = input.name.replace(/\[\d+\]/, `[${index}]`);
+                    });
                     if (field) {
                         input.name = `guests[${index}][${field}]`;
                     }
@@ -223,11 +285,20 @@
             });
         } else if (existingGuests.length > 0) {
             existingGuests.forEach((guest, index) => {
+
+                const mappedProducts = {};
+                if (guest.products && guest.products.length > 0) {
+                    guest.products.forEach(product => {
+                        mappedProducts[product.pivot.category_id] = product.id;
+                    });
+                }
+
                 addGuestForm({
                     name: guest.name,
                     treatment_id: guest.treatment_id,
                     therapist_id: guest.therapist_id,
                     duration_in_min: guest.duration_in_min,
+                    products: mappedProducts
                 }, index);
             });
         } else {

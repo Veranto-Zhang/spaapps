@@ -41,6 +41,9 @@ class UpdateStoreAssignRequest extends FormRequest
             'guests.*.treatment_id' => 'required|exists:treatments,id',
             'guests.*.therapist_id' => 'required|exists:therapists,id',
             'guests.*.duration_in_min' => 'required|integer|min:30|max:180',
+
+            'guests.*.products' => 'nullable|array',
+            'guests.*.products.*' => 'nullable|integer|exists:products,id',
         ];
     }
 

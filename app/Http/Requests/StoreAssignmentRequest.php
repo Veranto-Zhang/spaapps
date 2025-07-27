@@ -32,6 +32,10 @@ class StoreAssignmentRequest extends FormRequest
             'guests.*.treatment_id' => 'required|exists:treatments,id',
             'guests.*.therapist_id' => 'required|exists:therapists,id',
             'guests.*.duration_in_min' => 'required|integer|min:30',
+            
+            // Products validation by category (nullable)
+            'guests.*.products' => 'nullable|array',
+            'guests.*.products.*' => 'nullable|integer|exists:products,id',
         ];
     }
 }

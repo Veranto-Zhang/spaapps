@@ -58,6 +58,7 @@ return [
             'strict' => true,
             'dump' => [
                 'dump_binary_path' => '/Applications/MAMP/Library/bin/mysql80/bin',
+                // 'dump_binary_path' => env('DB_DUMP_BINARY_PATH', ''),
                 'use_single_transaction' => true,
                 'timeout' => 300,
             ],

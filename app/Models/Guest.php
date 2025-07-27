@@ -29,4 +29,11 @@ class Guest extends Model
     public function assignment() {
         return $this->belongsTo(Assignment::class);
     }
+
+    public function products(){
+        return $this->belongsToMany(Product::class, 'guest_product')
+                    ->withPivot('category_id')
+                    ->withTimestamps();
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAssignmentRequest;
 use App\Http\Requests\UpdateStoreAssignRequest;
 use App\Models\Assignment;
 use App\Models\Guest;
+use App\Models\Product;
 use App\Models\Room;
 use App\Models\Therapist;
 use App\Models\Treatment;
@@ -84,8 +85,9 @@ class AssignmentController extends Controller
         $room = Room::findOrFail($request->room_id);
         $therapists = Therapist::orderBy('name')->get();
         $treatments = Treatment::orderBy('name')->get();
+        $products = Product::with('category')->orderBy('name')->get();
 
-        return view('assignments.create', compact('room', 'therapists', 'treatments'));
+        return view('assignments.create', compact('room','products', 'therapists', 'treatments'));
     }
 
     public function store(StoreAssignmentRequest $request)
@@ -126,6 +128,22 @@ class AssignmentController extends Controller
             }
         }
 
+        foreach ($request->guests as $index => $guest) {
+            if (isset($guest['products']) && is_array($guest['products'])) {
+                foreach ($guest['products'] as $categoryId => $productId) {
+                    if (!empty($productId)) {
+                        $product = Product::find($productId);
+        
+                        if (!$product || $product->stock <= 0) {
+                            return back()->withErrors([
+                                "guests.$index.products.$categoryId" => "Product '{$product?->name}' is out of stock."
+                            ])->withInput();
+                        }
+                    }
+                }
+            }
+        }
+
         // Save to database inside transaction
         DB::transaction(function () use ($request, $room, $date, $startTime) {
             $assignment = Assignment::create([
@@ -137,13 +155,28 @@ class AssignmentController extends Controller
             ]);
 
             foreach ($request->guests as $guest) {
-                Guest::create([
+                $createdGuest = Guest::create([
                     'assignment_id' => $assignment->id,
                     'name' => $guest['name'],
                     'treatment_id' => $guest['treatment_id'],
                     'therapist_id' => $guest['therapist_id'],
                     'duration_in_min' => (int) $guest['duration_in_min'],
                 ]);
+
+                foreach ($guest['products'] as $categoryId => $productId) {
+                    if (!empty($productId)) {
+                        $createdGuest->products()->attach($productId, [
+                            'category_id' => $categoryId,
+                        ]);
+
+                        $product = Product::find($productId);
+                        if ($product && $product->stock > 0) {
+                            $product->decrement('stock');
+                        }
+
+                    }
+                }
+        
             }
         });
 
@@ -167,13 +200,33 @@ class AssignmentController extends Controller
     public function edit(Assignment $assignment)
     {
         //
-        $assignment->load('guests');
+        $assignment->load([
+            'guests.treatment',
+            'guests.therapist',
+            'guests.products' => function ($q) {
+                $q->withPivot('category_id');
+            }
+        ]);
+
         $therapists = Therapist::orderBy('name')->get();
         $treatments = Treatment::orderBy('name')->get();
-        $roomId = Room::findOrFail($assignment->room_id);
+        $products = Product::orderBy('name')->get();
         $rooms = Room::orderBy('name')->get();
+
+        // Group each guest's selected products by category for easy JS prefill
+        $guests = $assignment->guests->map(function ($guest) {
+            $productsByCategory = $guest->products->groupBy('pivot.category_id')->map(fn($group) => $group->first()?->id);
+            return [
+                'name' => $guest->name,
+                'treatment_id' => $guest->treatment_id,
+                'therapist_id' => $guest->therapist_id,
+                'duration_in_min' => $guest->duration_in_min,
+                'products' => $productsByCategory,
+            ];
+        });
+
         
-        return view('assignments.edit', compact('roomId','assignment', 'rooms', 'therapists', 'treatments'));
+        return view('assignments.edit', compact('assignment','products', 'rooms', 'therapists', 'treatments'));
     }
 
     public function update(UpdateStoreAssignRequest $request, Assignment $assignment)
@@ -214,6 +267,22 @@ class AssignmentController extends Controller
         }
     }
 
+    foreach ($request->guests as $index => $guest) {
+        if (isset($guest['products']) && is_array($guest['products'])) {
+            foreach ($guest['products'] as $categoryId => $productId) {
+                if (!empty($productId)) {
+                    $product = Product::find($productId);
+    
+                    if (!$product || $product->stock <= 0) {
+                        return back()->withErrors([
+                            "guests.$index.products.$categoryId" => "Product '{$product?->name}' is out of stock."
+                        ])->withInput();
+                    }
+                }
+            }
+        }
+    }
+
     // Update in transaction
     DB::transaction(function () use ($request, $assignment, $room, $date, $startTime) {
         $assignment->update([
@@ -224,18 +293,39 @@ class AssignmentController extends Controller
             'remark' => $request->remark,
         ]);
 
+
+
         // Remove old guests
-        $assignment->guests()->forceDelete();
+        // $assignment->guests()->forceDelete();
+        foreach ($assignment->guests as $oldGuest) {
+            foreach ($oldGuest->products as $product) {
+                $product->increment('stock');
+            }
+            $oldGuest->products()->detach();
+            $oldGuest->forceDelete(); // or ->forceDelete();
+        }
 
         // Insert updated guest list
         foreach ($request->guests as $guest) {
-            Guest::create([
+            $createdGuest = Guest::create([
                 'assignment_id' => $assignment->id,
                 'name' => $guest['name'],
                 'treatment_id' => $guest['treatment_id'],
                 'therapist_id' => $guest['therapist_id'],
                 'duration_in_min' => (int) $guest['duration_in_min'],
             ]);
+        }
+        foreach ($guest['products'] as $categoryId => $productId) {
+            if (!empty($productId)) {
+                $createdGuest->products()->attach($productId, [
+                    'category_id' => $categoryId,
+                ]);
+
+                $product = Product::find($productId);
+                        if ($product && $product->stock > 0) {
+                            $product->decrement('stock');
+                        }
+            }
         }
     });
 
@@ -253,6 +343,12 @@ class AssignmentController extends Controller
             return redirect()
                 ->route('assignments.show', $assignment)
                 ->with('error', 'You cannot delete assignments from the past.');
+        }
+
+        foreach ($assignment->guests as $guest) {
+            foreach ($guest->products as $product) {
+                $product->increment('stock');
+            }
         }
 
         DB::transaction(function() use($assignment){

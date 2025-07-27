@@ -8,6 +8,8 @@ use App\Http\Controllers\TherapistController;
 use App\Http\Controllers\TreatmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -33,10 +35,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/therapists/therapistslist', [TherapistController::class, 'therapistslist'])->name('therapists.therapistslist');
 
     Route::resource('rooms', RoomController::class);
+    Route::resource('categories', ProductCategoryController::class);
     Route::resource('therapists', TherapistController::class);
     Route::resource('treatments', TreatmentController::class);
     Route::resource('assignments', AssignmentController::class);
     Route::resource('guests', GuestController::class);
+
+    Route::resource('products', ProductController::class);
+    Route::get('/products/{product}/stockedit', [ProductController::class, 'stockedit'])->name('products.stockedit');
+    Route::put('/products/{product}/stock', [ProductController::class, 'updateStock'])->name('products.updateStock');
 
     Route::patch('/therapists/{therapist}/toggle', [TherapistController::class, 'toggle'])->name('therapists.toggle');
     

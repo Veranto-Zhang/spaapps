@@ -39,9 +39,6 @@
                                 <th scope="col" class="px-6 py-4">
                                     Treatment
                                 </th>
-                                <th scope="col" class="px-6 py-4">
-                                    Duration
-                                </th>
                                 <th scope="col" class="px-6 py-4 rounded-tr-xl">
                                     Therapist
                                 </th>
@@ -57,10 +54,7 @@
                                     <div class="uppercase text-lg text-gray-900">{{ $guest->name }}</div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $guest->treatment->name }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $guest->duration_in_min }}
+                                    {{ $guest->duration_in_min }} Mins of {{ $guest->treatment->name }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $guest->therapist->name }}
