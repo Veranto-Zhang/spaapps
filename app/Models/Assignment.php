@@ -16,6 +16,7 @@ class Assignment extends Model
         'date',
         'start_time',
         'remark',
+        'contact',
 
     ];
 

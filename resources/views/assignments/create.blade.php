@@ -68,6 +68,13 @@
                                     <x-input-error :messages="$errors->get('trx_no')" class="mt-2" />
                                 </div>
 
+                                <!-- Contact -->
+                                <div class="col-span-2">
+                                    <label class="block mb-2 text-md font-medium text-gray-900">Contact</label>
+                                    <input type="text" name="contact" value="{{ old('contact')}}" class="border border-gray-300 text-gray-900 text-md rounded-lg block w-full p-2.5">
+                                    <x-input-error :messages="$errors->get('contact')" class="mt-2" />
+                                </div>
+
                                 <!-- Remark -->
                                 <div class="col-span-2">
                                     <label class="block mb-2 text-md font-medium text-gray-900">Remark</label>

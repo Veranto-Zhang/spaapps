@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->time('start_time');
             $table->text('remark');
+            $table->string('contact');
             $table->softDeletes();
             $table->timestamps();
         });

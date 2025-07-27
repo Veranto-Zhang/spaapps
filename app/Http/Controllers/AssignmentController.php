@@ -152,6 +152,7 @@ class AssignmentController extends Controller
                 'date' => $date,
                 'start_time' => $startTime,
                 'remark' => $request->remark,
+                'contact' => $request->contact,
             ]);
 
             foreach ($request->guests as $guest) {
@@ -291,6 +292,7 @@ class AssignmentController extends Controller
             'date' => $date,
             'start_time' => $startTime,
             'remark' => $request->remark,
+            'contact' => $request->contact,
         ]);
 
 

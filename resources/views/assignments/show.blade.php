@@ -53,8 +53,7 @@
                 </div>
                 @endif
 
-                <div class="border-t border-gray-200 pt-6">
-                    <h3 class="text-xl text-indigo-950 font-bold mb-4">Guest List</h3>
+                <div class="border-t border-gray-200 pt-4 pb-4">
 
                     <table class="w-full text-md text-left text-gray-900 overflow-hidden">
                         <thead class="text-md uppercase">
@@ -63,7 +62,7 @@
                                     No
                                 </th>
                                 <th scope="col" class="px-6 py-4">
-                                    Name
+                                    Guest
                                 </th>
                                 <th scope="col" class="px-6 py-4">
                                     Treatment
