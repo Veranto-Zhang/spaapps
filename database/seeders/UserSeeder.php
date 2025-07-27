@@ -21,10 +21,10 @@ class UserSeeder extends Seeder
         // ]);
 
         $users = [
-            ['name' => 'Office', 'email' => 'office@admin.com', 'password' => 'password'],
-            ['name' => 'Spa', 'email' => 'spa@admin.com', 'password' => 'securepassword'],
-            ['name' => 'Admin', 'email' => 'admin@admin.com', 'password' => 'admin123'],
-            ['name' => 'SuperAdmin', 'email' => 'super@admin.com', 'password' => 'admin123'],
+            ['name' => 'Office', 'email' => 'office@admin.com', 'password' => 'BintanHoliday'],
+            ['name' => 'Spa', 'email' => 'spa@admin.com', 'password' => 'PeonyLounge'],
+            ['name' => 'Pak Andri & Bu Susi', 'email' => 'owner@admin.com', 'password' => 'STAT0808'],
+            ['name' => 'SuperAdmin', 'email' => 'super@admin.com', 'password' => 'zwlspace123'],
         ];
         
         foreach ($users as $userData) {

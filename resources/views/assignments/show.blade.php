@@ -51,36 +51,56 @@
                         <p class="text-indigo-950 text-lg font-bold">{{ $assignment->remark }}</p>
                     </div>
                 </div>
-
                 @endif
 
                 <div class="border-t border-gray-200 pt-6">
                     <h3 class="text-xl text-indigo-950 font-bold mb-4">Guest List</h3>
 
-                    @forelse($assignment->guests as $index => $guest)
-                    <div class="item-card flex flex-col md:flex-row justify-between items-start md:items-center gap-y-4 mt-4">
-                        <div class="flex flex-row items-center gap-x-3">
-                            <div class="text-indigo-950 text-xl font-bold w-6">{{ $index + 1 }}.</div>
-                            <div class="flex flex-col">
-                                <h4 class="text-indigo-950 text-xl font-bold">{{ $guest->name }}</h4>
-                                <p class="text-slate-500 text-md">Duration: {{ $guest->duration_in_min }} mins</p>
-                            </div>
-                        </div> 
-                        <div class="flex flex-col">
-                            <p class="text-slate-500 text-md">Treatment</p>
-                            <h4 class="text-indigo-950 text-xl font-bold">{{ $guest->treatment->name ?? '-' }}</h4>
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-slate-500 text-md">Therapist</p>
-                            <h4 class="text-indigo-950 text-xl font-bold">{{ $guest->therapist->name ?? '-' }}</h4>
-                        </div>
-                    </div>
-                    @empty
-                    <p class="text-gray-500 italic">No guests assigned.</p>
-                    @endforelse
+                    <table class="w-full text-md text-left text-gray-900 overflow-hidden">
+                        <thead class="text-md uppercase">
+                            <tr class="border-b">
+                                <th scope="col" class="pr-2 py-4">
+                                    No
+                                </th>
+                                <th scope="col" class="px-6 py-4">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-4">
+                                    Treatment
+                                </th>
+                                <th scope="col" class="px-6 py-4">
+                                    Spa Products
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($assignment->guests as $index => $guest)
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="pr-2 py-4 pl-2">
+                                    {{ $index + 1 }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-lg text-gray-900">{{ $guest->name }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $guest->duration_in_min }} mins {{ $guest->treatment->name}} - {{ $guest->therapist->name}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @foreach ($guest->products as $product)
+                                        {{ $product->name }} {{ !$loop->last ? ' | ' : '' }}
+                                    @endforeach
+                                </td>
+                                
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-gray-400">No guests assigned.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
 
-                <hr>
 
                 <div class="flex flex-row justify-between">
                     
