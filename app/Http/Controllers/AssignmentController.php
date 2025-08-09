@@ -119,6 +119,21 @@ class AssignmentController extends Controller
             return back()->withErrors(['start_time' => 'Room is already full during this time.'])->withInput();
         }
 
+        //check doubled therapist
+        $therapistIds = [];
+
+        foreach ($request->guests as $index => $guest) {
+            $therapistId = $guest['therapist_id'];
+        
+            if (in_array($therapistId, $therapistIds)) {
+                return back()->withErrors([
+                    "guests.$index.therapist_id" => "This therapist is already assigned to another guest in this form."
+                ])->withInput();
+            }
+        
+            $therapistIds[] = $therapistId;
+        }
+
        // Cek Availability Therapist
        foreach ($request->guests as $index => $guest) {
             if (!$this->isTherapistAvailable($guest['therapist_id'], $date, $startNew, (int)$guest['duration_in_min'])) {
@@ -259,6 +274,21 @@ class AssignmentController extends Controller
         return back()->withErrors(['start_time' => 'Room is already full during this time.'])->withInput();
     }
 
+    //check doubled therapist
+    $therapistIds = [];
+
+    foreach ($request->guests as $index => $guest) {
+        $therapistId = $guest['therapist_id'];
+    
+        if (in_array($therapistId, $therapistIds)) {
+            return back()->withErrors([
+                "guests.$index.therapist_id" => "This therapist is already assigned to another guest in this form."
+            ])->withInput();
+        }
+    
+        $therapistIds[] = $therapistId;
+    }
+    
     // Cek Availability Therapist
     foreach ($request->guests as $index => $guest) {
         if (!$this->isTherapistAvailable($guest['therapist_id'], $date, $startNew, (int)$guest['duration_in_min'], $assignment->id)) {
@@ -316,7 +346,7 @@ class AssignmentController extends Controller
                 'therapist_id' => $guest['therapist_id'],
                 'duration_in_min' => (int) $guest['duration_in_min'],
             ]);
-        }
+        
         foreach ($guest['products'] as $categoryId => $productId) {
             if (!empty($productId)) {
                 $createdGuest->products()->attach($productId, [
@@ -329,6 +359,7 @@ class AssignmentController extends Controller
                         }
             }
         }
+    }
     });
 
     return redirect()->route('assignments.index');

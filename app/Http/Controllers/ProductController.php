@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $products = Product::orderByDesc('id')->paginate(10);
+        $products = Product::orderByDesc('name')->paginate(20);
         return view('products.index', compact('products'));
 
     }
@@ -90,7 +90,7 @@ class ProductController extends Controller
         $stockLogs = $product->stockLogs()
                     ->with('user')
                     ->orderBy('created_at', 'desc')
-                    ->paginate(10);
+                    ->paginate(20);
         return view('products.stockedit', compact('product', 'stockLogs'));
     }
 

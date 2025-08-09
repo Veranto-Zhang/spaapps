@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AssignmentReportController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('treatments', TreatmentController::class);
     Route::resource('assignments', AssignmentController::class);
     Route::resource('guests', GuestController::class);
+
+    Route::get('/reports/assignments', [AssignmentReportController::class, 'index'])->name('reports.assignments');
+    Route::get('/reports/assignments/export', [AssignmentReportController::class, 'exportExcel'])->name('reports.assignments.export');
 
     Route::resource('products', ProductController::class);
     Route::get('/products/{product}/stockedit', [ProductController::class, 'stockedit'])->name('products.stockedit');

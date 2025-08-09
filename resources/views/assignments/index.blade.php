@@ -10,38 +10,33 @@
                     $prevDate = $currentDate->copy()->subDay()->format('Y-m-d');
                     $nextDate = $currentDate->copy()->addDay()->format('Y-m-d');
                 @endphp
+                <!--<form method="GET" action="{{ route('assignments.index') }}" class="inline-block">-->
+                <!--    <div class="flex items-center gap-4 border border-gray-300 rounded-lg px-2 bg-white shadow-sm">-->
+                <!--        <a href="{{ route('assignments.index', ['date' => $prevDate]) }}"-->
+                <!--        class="text-xl font-bold text-gray-600 hover:text-[#7d5f12] hover:bg-gray-100 rounded px-2 py-1 transition duration-150">-->
+                <!--            &lt; -->
+                <!--        </a>-->
 
-                <form method="GET" action="{{ route('assignments.index') }}" class="inline-block">
-                    <div class="flex items-center gap-4 border border-gray-300 rounded-lg px-2 bg-white shadow-sm">
-                        <a href="{{ route('assignments.index', ['date' => $prevDate]) }}"
-                        class="text-xl font-bold text-gray-600 hover:text-[#7d5f12] hover:bg-gray-100 rounded px-2 py-1 transition duration-150">
-                            &lt; 
-                        </a>
+                <!--        <span class="text-base font-semibold text-gray-800">-->
+                <!--          {{ $currentDate->format('F j, Y') }}-->
+                <!--        </span>-->
 
-                        <span class="text-base font-semibold text-gray-800">
-                          {{ $currentDate->format('F j, Y') }}
-                        </span>
-
-                        <a href="{{ route('assignments.index', ['date' => $nextDate]) }}"
-                        class="text-xl font-bold text-gray-600 hover:text-[#7d5f12] hover:bg-gray-100 rounded px-2 py-1 transition duration-150">
-                         &gt;
-                        </a>
-                    </div>
-                </form>
+                <!--        <a href="{{ route('assignments.index', ['date' => $nextDate]) }}"-->
+                <!--        class="text-xl font-bold text-gray-600 hover:text-[#7d5f12] hover:bg-gray-100 rounded px-2 py-1 transition duration-150">-->
+                <!--         &gt;-->
+                <!--        </a>-->
+                <!--    </div>-->
+                <!--</form>-->
                 
-                {{-- <form method="GET" action="{{ route('assignments.index') }}" class="flex flex-col sm:flex-row sm:items-center gap-2">
-                    <label for="date" class="font-bold text-gray-700">Select Date:</label>
-                    <input
-                        type="date"
-                        id="date"
-                        name="date"
+                <form method="GET" action="{{ route('assignments.index') }}" class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <input type="date" id="date" name="date"
                         value="{{ request('date', \Carbon\Carbon::today()->format('Y-m-d')) }}"
                         class="border border-gray-300 rounded px-3 py-1"
                     >
                     <button type="submit" class="font-bold px-5 py-2.5 bg-[#7d5f12] text-white rounded-lg">
                         Filter
                     </button>
-                </form> --}}
+                </form>
             </div>
 
             <div class="bg-white shadow-sm rounded-md sm:rounded-lg p-6 mb-8">

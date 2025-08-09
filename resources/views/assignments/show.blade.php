@@ -42,16 +42,28 @@
                     </div>
                 </div>
 
-                @if ($assignment->remark)
-                <hr>
-                
-                <div class="flex flex-col md:flex-row justify-start">
-                    <div class="flex flex-col gap-y-1">
-                        <h3 class="text-slate-600 text-sm">Remark</h3>
-                        <p class="text-indigo-950 text-lg font-bold">{{ $assignment->remark }}</p>
-                    </div>
+                @if ($assignment->remark || $assignment->contact)
+                <hr class="my-4 border-gray-300">
+
+                <div class="flex flex-col md:flex-row gap-4">
+                    @if ($assignment->contact)
+                        <div class="flex flex-col gap-y-1 md:w-1/4 w-full">
+                            <h3 class="text-slate-600 text-sm">Contact</h3>
+                            <p class="text-indigo-950 text-lg font-bold">{{ $assignment->contact }}</p>
+                        </div>
+                    @endif
+
+                    @if ($assignment->remark)
+                        <div class="flex flex-col gap-y-1 md:w-3/4 w-full">
+                            <h3 class="text-slate-600 text-sm">Remark</h3>
+                            <p class="text-indigo-950 text-lg font-bold whitespace-pre-line">
+                                {{ $assignment->remark }}
+                            </p>
+                        </div>
+                    @endif
                 </div>
-                @endif
+            @endif
+                
 
                 <div class="border-t border-gray-200 pt-4 pb-4">
 
@@ -75,7 +87,7 @@
                         <tbody>
                             @forelse($assignment->guests as $index => $guest)
                             <tr class="border-b hover:bg-gray-50">
-                                <td class="pr-2 py-4 pl-2">
+                                <td class="pr-2 py-4 px-2">
                                     {{ $index + 1 }}
                                 </td>
                                 <td class="px-6 py-4">
