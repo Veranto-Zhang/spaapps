@@ -3,30 +3,13 @@
         <div class="mx-auto sm:px-4 lg:px-4">
             <div class="bg-white shadow-sm rounded-md sm:rounded-lg p-6 mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Spa Rooms Assignment
+                    Spa Room Assignment
                 </h2>
                 @php
                     $currentDate = \Carbon\Carbon::parse(request('date', \Carbon\Carbon::today()));
                     $prevDate = $currentDate->copy()->subDay()->format('Y-m-d');
                     $nextDate = $currentDate->copy()->addDay()->format('Y-m-d');
                 @endphp
-                <!--<form method="GET" action="{{ route('assignments.index') }}" class="inline-block">-->
-                <!--    <div class="flex items-center gap-4 border border-gray-300 rounded-lg px-2 bg-white shadow-sm">-->
-                <!--        <a href="{{ route('assignments.index', ['date' => $prevDate]) }}"-->
-                <!--        class="text-xl font-bold text-gray-600 hover:text-[#7d5f12] hover:bg-gray-100 rounded px-2 py-1 transition duration-150">-->
-                <!--            &lt; -->
-                <!--        </a>-->
-
-                <!--        <span class="text-base font-semibold text-gray-800">-->
-                <!--          {{ $currentDate->format('F j, Y') }}-->
-                <!--        </span>-->
-
-                <!--        <a href="{{ route('assignments.index', ['date' => $nextDate]) }}"-->
-                <!--        class="text-xl font-bold text-gray-600 hover:text-[#7d5f12] hover:bg-gray-100 rounded px-2 py-1 transition duration-150">-->
-                <!--         &gt;-->
-                <!--        </a>-->
-                <!--    </div>-->
-                <!--</form>-->
                 
                 <form method="GET" action="{{ route('assignments.index') }}" class="flex flex-col sm:flex-row sm:items-center gap-2">
                     <input type="date" id="date" name="date"

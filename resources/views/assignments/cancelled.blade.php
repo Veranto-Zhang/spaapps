@@ -21,8 +21,8 @@
                                 <th class="pl-6 pr-2 py-4 rounded-tl-xl">No</th>
                                 <th class="px-6 py-4">Transaction No</th>
                                 <th class="px-6 py-4">Date</th>
-                                <th class="px-6 py-4">Room</th>
                                 <th class="px-6 py-4">Cancelled On</th>
+                                <th class="px-6 py-4">Remark</th>
                                 <th class="px-6 py-4 rounded-tr-xl">Action</th>
                             </tr>
                         </thead>
@@ -39,10 +39,10 @@
                                         {{ \Carbon\Carbon::parse($assignment->date)->format('d M Y') }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $assignment->room->name ?? '-' }}
+                                        {{ $assignment->deleted_at ? $assignment->deleted_at->format('d M Y H:i') : '-' }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $assignment->deleted_at ? $assignment->deleted_at->format('d M Y H:i') : '-' }}
+                                        {{ $assignment->remark ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <a href="{{ route('assignments.show', $assignment) }}" class="font-medium text-blue-600 hover:underline">
